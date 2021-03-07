@@ -13,7 +13,7 @@ commands:
           when: on_fail
           command: |
             # Your code here
-            exit 1
+            aws cloudformation delete-stack --stack-name prod-${CIRCLE_WORKFLOW_ID}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            cd ~/project/frontend
+            cd frontend
             npm i
             npm run build
       - save_cache:
@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            cd ~/project/backend
+            cd backend
             npm i
             npm run build
       - save_cache:
@@ -85,7 +85,7 @@ jobs:
       - run:
           name: test frontend
           command: |
-            cd ~/project/frontend
+            cd frontend
             npm run test    
 
   test-backend:
@@ -102,7 +102,7 @@ jobs:
       - run:
           name: test backend
           command: |
-            cd ~/project/backend
+            cd backend
             npm run test
             
   scan-frontend:
@@ -116,6 +116,11 @@ jobs:
       - restore_cache:
           keys: [frontend-build] 
       # Your job code here
+      - run:
+          name: test vulnerabilities
+          command: |
+            cd frontend
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -128,6 +133,11 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       # Your job code here
+      - run:
+          name: test backend vulnerabilities
+          command: |
+            cd backend
+            npm audit --audit-level=critical
 
   deploy-infrastructure:
     docker:
