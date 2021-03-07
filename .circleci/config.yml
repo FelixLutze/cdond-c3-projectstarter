@@ -65,7 +65,6 @@ jobs:
           name: Back-end build
           command: |
             cd backend
-            cd frontend
             npm i
             npm run build
       - save_cache:
