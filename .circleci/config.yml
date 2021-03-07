@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            cd frontend
+            cd cd ~/project/frontend
             npm i
             npm run build
       - save_cache:
@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            cd backend
+            cd ~/project/backend
             npm i
             npm run build
       - save_cache:
@@ -85,7 +85,7 @@ jobs:
       - run:
           name: test frontend
           command: |
-            cd frontend
+            cd ~/project/frontend
             npm run test    
 
   test-backend:
@@ -102,7 +102,7 @@ jobs:
       - run:
           name: test backend
           command: |
-            cd backend
+            cd ~/project/backend
             npm run test
             
   scan-frontend:
