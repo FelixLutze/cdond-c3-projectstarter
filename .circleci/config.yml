@@ -13,7 +13,7 @@ commands:
           when: on_fail
           command: |
             # Your code here
-            aws cloudformation delete-stack --stack-name prod-${CIRCLE_WORKFLOW_ID}
+            aws cloudformation delete-stack --stack-name prod-${CIRCLE_WORKFLOW_ID:0:7}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -153,8 +153,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
-              --stack-name "${CIRCLE_WORKFLOW_ID}-udapeople-backend" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
+              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-udapeople-backend" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Ensure front-end infrastructure exist
           command: |
