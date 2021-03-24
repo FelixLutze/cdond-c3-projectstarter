@@ -171,8 +171,7 @@ jobs:
               --region "${AWS_DEFAULT_REGION}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople" --output text >> ~/inventory.txt
-#            Output inserted ec2-instances
-#            cat ~/inventory.txt
+            cat ~/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -337,8 +336,8 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [build-frontend, build-backend]
+      - deploy-infrastructure
+#      - deploy-infrastructure:
 #          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 #          filters:
 #            branches:
