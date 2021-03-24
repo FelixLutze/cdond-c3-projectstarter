@@ -172,7 +172,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople" --output text >> ~/inventory.txt
 #            Output inserted ec2-instances
-            cat ~/inventory.txt
+#            cat ~/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
