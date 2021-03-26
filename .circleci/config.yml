@@ -179,7 +179,9 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID}
 
   configure-infrastructure:
     docker:
@@ -220,8 +222,8 @@ jobs:
           command: |
             ansible-playbook -i ~/inventory.txt /root/project/.circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-            workflow_id: ${CIRCLE_WORKFLOW_ID}
+#      - destroy-environment:
+#            workflow_id: ${CIRCLE_WORKFLOW_ID}
 
   run-migrations:
     docker:
@@ -230,13 +232,13 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - run:
-          name: Install AWS CLI
-          command: |
-            sudo apt-get update && sudo apt-get install -yy less
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+#      - run:
+#          name: Install AWS CLI
+#          command: |
+#            sudo apt-get update && sudo apt-get install -yy less
+#            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+#            unzip awscliv2.zip
+#            sudo ./aws/install
       - run:
           name: Setup environment variables
           command: |
@@ -256,7 +258,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm install
+            npm i
             npm run build
             npm run migrations > migrations.txt
       - run:
