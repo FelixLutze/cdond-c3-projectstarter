@@ -1,0 +1,23 @@
+---
+- name: "Create dir for backend"
+  file:
+    path: /home/ubuntu/backend
+    state: directory
+
+- name: "Move files to EC2-Instance"
+  become: true
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu
+
+- name: "Install dependencies"
+  shell: |
+    cd /home/ubuntu/backend
+    ls -la
+    npm install
+- name: "Start pm2 server"
+  become: true
+  shell: |
+    cd /home/ubuntu/backend
+    pm2 start npm run start
+    pm2 ls
