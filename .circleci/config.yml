@@ -294,16 +294,15 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export INSTANCE_IP=$(aws ec2 describe-instances \
-              --filters "Name=tag:Name,Values=backend-prod-${CIRCLE_WORKFLOW_ID}-udapeople-backend" \
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=prod-${CIRCLE_WORKFLOW_ID}-udapeople-backend" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-            export API_URL="http://${INSTANCE_IP}:3030"
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             echo API_URL=${API_URL} >> "frontend/.env"
 
-
-            export API_URL="http://${INSTANCE_IP}:3030"
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
@@ -352,9 +351,11 @@ jobs:
             cat backend/.env
       - run:
           name: Deploy backend
+          no_output_timeout: 30m
           command: |
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
+            cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       - revert-migrations:
@@ -372,20 +373,33 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
-      - run:
-          name: Get backend url
-          command: |
-            # your code here
+            apk add --update curl
+            pip install awscli
       - run:
           name: Backend smoke test.
           command: |
-            # your code here
+            BACKEND_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name, Values=prod-${CIRCLE_WORKFLOW_ID}-udapeople-backend" \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text)
+            echo $BACKEND_IP
+            curl "http://$BACKEND_IP:3030/api/status"
       - run:
           name: Frontend smoke test.
           command: |
-            # your code here
+            export FRONTEND_URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-west-1.amazonaws.com"
+            echo ${FRONTEND_URL}
+            if curl -s ${FRONTEND_URL} | grep "Welcome"
+            then
+            return 0
+            else
+            return 1
+            fi
       # Here's where you will add some code to rollback on failure
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID}
 
   cloudfront-update:
     docker:
