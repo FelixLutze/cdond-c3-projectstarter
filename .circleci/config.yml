@@ -330,7 +330,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update tar gzip ansible nodejs npm
+            apk add --update tar gzip ansible nodejs npm curl
             pip install awscli
       - run:
           name: Setup environment variables
