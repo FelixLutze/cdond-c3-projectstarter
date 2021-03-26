@@ -167,10 +167,10 @@ jobs:
               --tags project=udapeople \
               --stack-name "prod-${CIRCLE_WORKFLOW_ID}-udapeople-frontend" \
                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
-      - run: echo [web] > ~/inventory.txt
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+            echo [web] > ~/inventory.txt
             aws ec2 describe-instances \
               --region "${AWS_DEFAULT_REGION}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
