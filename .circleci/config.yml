@@ -259,7 +259,7 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            cd backend
+            cd /root/project/backend/
             npm i
             npm run migrations > migrations.txt
             cat migrations.txt
@@ -267,6 +267,7 @@ jobs:
           name: Send migration results to memstash
           command: |
             # Your code here
+            cd /root/project/backend/
             if grep -q "has been executed successfully" migrations.txt
             then
               echo "New database migrations are applied."
