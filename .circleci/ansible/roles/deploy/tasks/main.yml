@@ -30,7 +30,7 @@
   args:
     chdir: ~/backend
 
-- name: "Start pm2 server"
+- name: "Start pm2 server (with .env)"
   command: pm2 start npm -- run start
   args:
     chdir: ~/backend
