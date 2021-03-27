@@ -1,19 +1,22 @@
 ---
-- name: "Create dir for backend"
+- name: "Create new dir 'backend'"
   file:
     path: /home/ubuntu/backend
     state: directory
 
-- name: "Move files to EC2-Instance"
-  become: true
+- name: "Move backend files"
   copy:
-    src: /root/project/backend
-    dest: /home/ubuntu
+    src: /root/project/backend/artifact.tar.gz
+    dest: /home/ubuntu/backend
 
-- name: "Install dependencies"
+- name: "Decompress files"
   shell: |
-    cd /home/ubuntu/backend
-    ls -la
+    cd ~/backend
+    tar -xzf artifact.tar.gz
+
+- name: "npm install"
+  shell: |
+    cd ~/backend
     npm install
 
 - name: "Start pm2 server"
