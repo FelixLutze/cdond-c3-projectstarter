@@ -14,7 +14,7 @@
     cd ~/backend
     tar -xzf artifact.tar.gz
 
-- name: "npm install"
+- name: "Peform: npm install"
   shell: |
     cd ~/backend
     npm install
