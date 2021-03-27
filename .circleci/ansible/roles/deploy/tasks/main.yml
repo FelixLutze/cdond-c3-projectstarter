@@ -13,6 +13,7 @@
   unarchive:
     src: ~/backend/artifact.tar.gz
     dest: ~/backend/
+    remote_src: yes
 
 - name: "Remove compressed Archive"
   command: rm -f artifact.tar.gz
