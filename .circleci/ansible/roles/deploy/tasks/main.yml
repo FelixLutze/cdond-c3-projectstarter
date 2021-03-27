@@ -16,9 +16,9 @@
     remote_src: yes
 
 - name: "Remove compressed Archive"
-  command: rm -f artifact.tar.gz
-  args:
-    chdir: ~/backend
+  file:
+    path: ~/backend/artifact.tar.gz
+    state: absent
 
 - name: "Peform: npm install"
   command: npm install
