@@ -31,7 +31,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS=$(curl -H "token: 2602a685-e328-4829-902c-c2a29a663828" --request GET https://api.memstash.io/values/migration-<< parameters.workflow_id >>)
-            if(( $SUCCESS==1));
+            if(( $SUCCESS=="1"));
             then
               cd ~/project/backend
               npm install
@@ -223,7 +223,7 @@ jobs:
           name: Configure server
           command: |
             cat ~/inventory.txt
-            sudo ansible-playbook -i ~/inventory.txt /root/project/.circleci/ansible/configure-server.yml
+            ansible-playbook -i ~/inventory.txt ~/project/.circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID}
@@ -259,16 +259,16 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            sudo cd /root/project/backend/
-            sudo npm i
-            sudo npm run migrations > migrations.txt
-            sudo cat migrations.txt
+            cd ~/project/backend/
+            npm i
+            npm run migrations > migrations.txt
+            cat migrations.txt
       - run:
           name: Send migration results to memstash
           command: |
             # Your code here
-            sudo cd /root/project/backend/
-            if sudo grep -q "has been executed successfully" migrations.txt
+            cd ~/project/backend/
+            if grep -q "has been executed successfully" migrations.txt
             then
               echo "New database migrations are applied."
               curl -H "Content-Type: text/plain" -H "token: 2602a685-e328-4829-902c-c2a29a663828" --request PUT --data "1" https://api.memstash.io/values/migration-${CIRCLE_WORKFLOW_ID}
@@ -355,7 +355,7 @@ jobs:
           command: |
             tar -C backend -czvf artifact.tar.gz .
             cat ~/inventory.txt
-            sudo ansible-playbook -i ~/inventory.txt /root/project/.circleci/ansible/deploy-backend.yml
+            ansible-playbook -i ~/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID}
