@@ -20,8 +20,9 @@
     npm install
 
 - name: "Start pm2 server"
-  become: true
-  command: pm2 start npm -- run start
+  shell: |
+    pm2 start npm -- run start
+    pm2 ls
   args:
     chdir: /home/ubuntu/backend
   environment:
