@@ -6,7 +6,7 @@
 
 - name: "Move backend files"
   copy:
-    src: /root/project/backend/artifact.tar.gz
+    src: /root/project/artifact.tar.gz
     dest: /home/ubuntu/backend
 
 - name: "Decompress files"
