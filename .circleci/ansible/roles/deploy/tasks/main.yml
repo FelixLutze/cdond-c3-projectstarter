@@ -26,7 +26,7 @@
     chdir: ~/backend
 
 - name: "Peform: npm build"
-  command: npm build
+  command: npm run build
   args:
     chdir: ~/backend
 
