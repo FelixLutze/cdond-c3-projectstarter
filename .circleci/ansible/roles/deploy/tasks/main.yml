@@ -1,19 +1,18 @@
 ---
 - name: "Create new directory 'backend'"
   file:
-    path: /home/ubuntu/backend
+    path: ~/backend
     state: directory
 
 - name: "Move compressed backend Archive"
   copy:
-    src: /root/project/artifact.tar.gz
-    dest: /home/ubuntu/backend
+    src: ~/project/artifact.tar.gz
+    dest: ~/backend
 
 - name: "Decompress backend Archive"
-  args:
-    chdir: ~/backend
-  command: tar -xzf artifact.tar.gz
-    rm -f artifact.tar.gz
+  unarchive:
+    src: ~/backend/artifact.tar.gz
+    dest: ~/backend/
 
 - name: "Remove compressed Archive"
   args:
