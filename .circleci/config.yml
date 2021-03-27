@@ -360,16 +360,10 @@ jobs:
 
   smoke-test:
     docker:
-      # Lightweight Docker image
-      - image: alpine:latest
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update curl python-pip python-dev
-            sudo pip install awscli
       - run:
           name: Backend smoke test.
           command: |
