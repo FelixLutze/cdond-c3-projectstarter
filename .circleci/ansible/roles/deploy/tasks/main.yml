@@ -31,7 +31,8 @@
     chdir: ~/backend
 
 - name: "Start pm2 server (with .env)"
-  command: pm2 start npm -- run start
+#  command: pm2 start npm -- run start
+  command: pm2 start -f ./main.js
   args:
     chdir: ~/backend
   environment:
@@ -44,3 +45,5 @@
     TYPEORM_USERNAME: "{{ lookup('env','TYPEORM_USERNAME') }}"
     TYPEORM_PASSWORD: "{{ lookup('env','TYPEORM_PASSWORD') }}"
     TYPEORM_DATABASE: "{{ lookup('env','TYPEORM_DATABASE') }}"
+    TYPEORM_MIGRATIONS_DIR: "./migrations"
+    TYPEORM_MIGRATIONS: "./migrations/*.js"
