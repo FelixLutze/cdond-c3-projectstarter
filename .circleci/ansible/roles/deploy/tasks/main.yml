@@ -1,28 +1,29 @@
 ---
-- name: "Create new dir 'backend'"
+- name: "Create new directory 'backend'"
   file:
     path: /home/ubuntu/backend
     state: directory
 
-- name: "Move backend files"
+- name: "Move compressed backend Archive"
   copy:
     src: /root/project/artifact.tar.gz
     dest: /home/ubuntu/backend
 
-- name: "Decompress files"
-  shell: |
-    cd ~/backend
-    tar -xzf artifact.tar.gz
+- name: "Decompress backend Archive"
+  command: tar -xzf artifact.tar.gz
+    rm -f artifact.tar.gz
+
+- name: "Remove compressed Archive"
+  command: rm -f artifact.tar.gz
 
 - name: "Peform: npm install"
-  shell: |
-    cd ~/backend
-    npm install
+  command: npm install
+
+- name: "Peform: npm build"
+  command: npm build
 
 - name: "Start pm2 server"
-  shell: |
-    cd ~/backend
-    pm2 start npm -- run start
+  command: pm2 start npm -- run start
   environment:
     ENVIRONMENT: "{{ lookup('env', 'ENVIRONMENT') }}"
     NODE_ENV: "{{ lookup('env', 'NODE_ENV') }}"
