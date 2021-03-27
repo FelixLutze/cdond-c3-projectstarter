@@ -21,10 +21,8 @@
 
 - name: "Start pm2 server"
   shell: |
+    cd ~/backend
     pm2 start npm -- run start
-    pm2 ls
-  args:
-    chdir: /home/ubuntu/backend
   environment:
     ENVIRONMENT: "{{ lookup('env', 'ENVIRONMENT') }}"
     NODE_ENV: "{{ lookup('env', 'NODE_ENV') }}"
