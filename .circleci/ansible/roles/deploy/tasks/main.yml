@@ -20,12 +20,12 @@
     path: ~/backend/artifact.tar.gz
     state: absent
 
-- name: "Peform: npm install"
+- name: "Execute 'npm install'"
   command: npm install
   args:
     chdir: ~/backend
 
-- name: "Peform: npm build"
+- name: "Execute 'npm run build'"
   command: npm run build
   args:
     chdir: ~/backend
