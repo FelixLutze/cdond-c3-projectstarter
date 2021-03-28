@@ -21,8 +21,7 @@
     state: absent
 
 - name: "Execute 'npm install'"
-  shell: |
-    npm install
+  command: npm install
   args:
     chdir: ~/backend
 

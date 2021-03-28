@@ -3,19 +3,22 @@
   apt:
     update_cache: yes
 
-- name: "upgrade packages"
-  apt:
-    upgrade: yes
+#- name: "upgrade packages"
+#  apt:
+#    upgrade: yes
 
-- name: "remove dependencies that are no longer required"
-  apt:
-    autoremove: yes
+#- name: "remove dependencies that are no longer required"
+#  apt:
+#    autoremove: yes
 
 - name: "install dependencies"
   apt:
     name: [ "python3", "npm", "nodejs", "tar", "gzip" ]
     state: latest
     update_cache: yes
+
+- name: "Change npm version to 7.7.5"
+  command: npm install -g npm@7.7.5
 
 - name: "install pm2"
   npm:
