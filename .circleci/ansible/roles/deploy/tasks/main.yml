@@ -1,46 +1,41 @@
 ---
-- name: "Create new directory 'backend'"
-  file:
-    path: ~/backend
-    state: directory
-
 - name: "Move compressed backend Archive"
   copy:
     src: ~/project/artifact.tar.gz
-    dest: ~/backend
+    dest: ~/
 
 - name: "Decompress backend Archive"
   unarchive:
-    src: ~/backend/artifact.tar.gz
-    dest: ~/backend/
+    src: ~/artifact.tar.gz
+    dest: ~/
     remote_src: yes
 
 - name: "Remove compressed Archive"
   file:
-    path: ~/backend/artifact.tar.gz
+    path: ~/artifact.tar.gz
     state: absent
 
 - name: "Execute 'npm install'"
   command: npm install
   args:
-    chdir: ~/backend
+    chdir: ~/
 
 - name: "Execute 'npm run build'"
   command: npm run build
   args:
-    chdir: ~/backend
+    chdir: ~/
 
 - name: "Start pm2 server (with .env)"
   command: pm2 start npm -- start
   args:
-    chdir: ~/backend
+    chdir: ~/
   environment:
-    ENVIRONMENT: "~/backend/{{ lookup('env', 'ENVIRONMENT') }}"
-    NODE_ENV: "~/backend/{{ lookup('env', 'NODE_ENV') }}"
-    TYPEORM_CONNECTION: "~/backend/{{ lookup('env','TYPEORM_CONNECTION') }}"
-    TYPEORM_ENTITIES: "~/backend/{{ lookup('env', 'TYPEORM_ENTITIES') }}"
-    TYPEORM_HOST: "~/backend/{{ lookup('env','TYPEORM_HOST') }}"
-    TYPEORM_PORT: "~/backend/{{ lookup('env', 'TYPEORM_PORT') }}"
-    TYPEORM_USERNAME: "~/backend/{{ lookup('env','TYPEORM_USERNAME') }}"
-    TYPEORM_PASSWORD: "~/backend/{{ lookup('env','TYPEORM_PASSWORD') }}"
-    TYPEORM_DATABASE: "~/backend/{{ lookup('env','TYPEORM_DATABASE') }}"
+    ENVIRONMENT: "{{ lookup('env', 'ENVIRONMENT') }}"
+    NODE_ENV: "{{ lookup('env', 'NODE_ENV') }}"
+    TYPEORM_CONNECTION: "{{ lookup('env','TYPEORM_CONNECTION') }}"
+    TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES') }}"
+    TYPEORM_HOST: "{{ lookup('env','TYPEORM_HOST') }}"
+    TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
+    TYPEORM_USERNAME: "{{ lookup('env','TYPEORM_USERNAME') }}"
+    TYPEORM_PASSWORD: "{{ lookup('env','TYPEORM_PASSWORD') }}"
+    TYPEORM_DATABASE: "{{ lookup('env','TYPEORM_DATABASE') }}"
