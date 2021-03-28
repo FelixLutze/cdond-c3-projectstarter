@@ -21,8 +21,9 @@
     state: absent
 
 - name: "Execute 'npm install'"
-  npm:
-    path: ~/backend
+  shell: |
+    cd ~/backend
+    npm install
 
 - name: "Execute 'npm run build'"
   command: npm run build
