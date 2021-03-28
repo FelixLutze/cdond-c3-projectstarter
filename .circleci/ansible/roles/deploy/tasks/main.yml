@@ -23,7 +23,6 @@
 - name: "Execute 'npm install'"
   shell: |
     npm install
-    npm install
   args:
     chdir: ~/backend
 
