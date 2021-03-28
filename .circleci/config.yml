@@ -375,6 +375,8 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
+            echo "Wait 10 seconds for backend to become reachable"
+            sleep 10
             export BACKEND_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
