@@ -451,6 +451,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -462,19 +464,22 @@ jobs:
           command: |
             # your code here
             export OldWorkflowID=`cat ~/current_cloudfront.txt`
-            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-              --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
+            export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+              --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
 
-            echo "$STACKS: {STACKS}"
-            echo "OldWorkflowID ${OldWorkflowID}"
+            echo "STACKS: ${STACKS}"
+            echo "OldWorkflowID: ${OldWorkflowID}"
       - run:
           name: Remove old stacks and files
           command: |
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              aws s3 rb "s3://udapeople-${OldWorkflowID}" --force
+              aws s3 rb "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "prod-${OldWorkflowID}-udapeople-backend"
               aws cloudformation delete-stack --stack-name "prod-${OldWorkflowID}-udapeople-frontend"
+              echo "Old Stacks deleted."
+            else
+              echo "No old Stacks found."
             fi
 
 workflows:
