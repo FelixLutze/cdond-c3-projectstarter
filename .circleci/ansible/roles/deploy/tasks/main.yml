@@ -20,10 +20,10 @@
     path: ~/backend/artifact.tar.gz
     state: absent
 
-- name: "Execute 'npm install'"
-  command: npm install
-  args:
-    chdir: ~/backend
+#- name: "Execute 'npm install'"
+#  command: npm install
+#  args:
+#    chdir: ~/backend
 
 - name: "Execute 'npm run build'"
   command: npm run build
