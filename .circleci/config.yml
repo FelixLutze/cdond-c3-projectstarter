@@ -36,7 +36,7 @@ commands:
 #            if(( $SUCCESS=="1"));
 #            then
 #              cd ~/project/backend
-#              npm install --ignore-scripts
+#              npm install
 #              npm run migrations:revert
 #            fi
 
@@ -52,7 +52,7 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            npm install --ignore-scripts
+            npm i
             npm run build
       - save_cache:
           paths: [ frontend/node_modules ]
@@ -69,7 +69,7 @@ jobs:
           name: Back-end build
           command: |
             cd backend
-            npm install --ignore-scripts
+            npm i
             npm run build
       - save_cache:
           paths: [ backend/node_modules ]
@@ -91,7 +91,7 @@ jobs:
           no_output_timeout: 20m
           command: |
             cd frontend
-            npm install --ignore-scripts
+            npm i
             npm run test
 
   test-backend:
@@ -262,7 +262,7 @@ jobs:
           name: Run migrations
           command: |
             cd ~/project/backend/
-            npm install --ignore-scripts
+            npm i
             npm run migrations > migrations.txt
             cat migrations.txt
       - run:
@@ -311,7 +311,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
-            npm install --ignore-scripts
+            npm install
             npm run build
             aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID}
       # Here's where you will add some code to rollback on failure
