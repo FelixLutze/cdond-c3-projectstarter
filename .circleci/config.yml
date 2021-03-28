@@ -12,10 +12,10 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            # Your code here
-            aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
-            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-backend
-            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-frontend
+#            # Your code here
+#            aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
+#            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-backend
+#            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-frontend
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -29,14 +29,14 @@ commands:
           # Add when this will run
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl -H "token: 2602a685-e328-4829-902c-c2a29a663828" --request GET https://api.memstash.io/values/migration-<< parameters.workflow_id >>)
-            if(( $SUCCESS=="1"));
-            then
-              cd ~/project/backend
-              npm install
-              npm run migrations:revert
-            fi
+#            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+#            SUCCESS=$(curl -H "token: 2602a685-e328-4829-902c-c2a29a663828" --request GET https://api.memstash.io/values/migration-<< parameters.workflow_id >>)
+#            if(( $SUCCESS=="1"));
+#            then
+#              cd ~/project/backend
+#              npm install
+#              npm run migrations:revert
+#            fi
 
 jobs:
   build-frontend:
