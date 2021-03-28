@@ -22,9 +22,10 @@
     TYPEORM_MIGRATIONS: "{{ lookup('env','TYPEORM_MIGRATIONS') }}"
     TYPEORM_MIGRATIONS_DIR: "{{ lookup('env','TYPEORM_MIGRATIONS_DIR') }}"
   #  pre_tasks:
-  #    - name: "Wait 20 seconds for target connection to become reachable/usable."
+  #    - name: "Wait 600 seconds for target connection to become reachable/usable."
   #      # Your code here
-  #      command: sleep 20s
+  #      command: sleep 600s
   roles:
     # Your code here
     - configure-server
+    - configure-prometheus-node-exporter
