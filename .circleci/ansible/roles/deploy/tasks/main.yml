@@ -21,9 +21,9 @@
     state: absent
 
 - name: "Execute 'npm install'"
-  shell: |
-    cd ~/backend
-    npm install
+  command: npm install --ignore-scripts
+  args:
+    chdir: ~/backend
 
 - name: "Execute 'npm run build'"
   command: npm run build
