@@ -385,7 +385,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            export FRONTEND_URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3.eu-central-1.amazonaws.com/wrong"
+            export FRONTEND_URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3.eu-central-1.amazonaws.com/index.html"
             echo "FRONTEND_URL: ${FRONTEND_URL}"
             if curl -s ${FRONTEND_URL} | grep "Welcome"
             then
