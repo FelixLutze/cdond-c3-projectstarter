@@ -12,7 +12,7 @@
 - name: "Decompress backend Archive"
   unarchive:
     src: ~/backend/artifact.tar.gz
-    dest: ~/backend/
+    dest: ~/backend
     remote_src: yes
 
 - name: "Remove compressed Archive"
@@ -21,9 +21,8 @@
     state: absent
 
 - name: "Execute 'npm install'"
-  command: npm install
-  args:
-    chdir: ~/backend
+  npm:
+    path: ~/backend
 
 - name: "Execute 'npm run build'"
   command: npm run build
