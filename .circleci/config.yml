@@ -421,8 +421,25 @@ jobs:
       - run:
           name: Update cloudfront distribution
           command: |
-            # your code here
+            aws cloudformation \
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text > ~/current_cloudfront.txt
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --stack-name prduction-udapeople-cloudfront \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID}"
+
+            echo "Current Cloudfront information:"
+            cat ~/current_cloudfront.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - current_cloudfront.txt
       # Here's where you will add some code to rollback on failure
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID}
 
   cleanup:
     docker:
