@@ -7,12 +7,12 @@
 - name: "Move compressed backend Archive"
   copy:
     src: ~/project/artifact.tar.gz
-    dest: ~/backend
+    dest: ~/
 
 - name: "Decompress backend Archive"
   unarchive:
-    src: ~/backend/artifact.tar.gz
-    dest: ~/backend/
+    src: ~/artifact.tar.gz
+    dest: ~/
     remote_src: yes
 
 - name: "Remove compressed Archive"
