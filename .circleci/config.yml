@@ -13,10 +13,10 @@ commands:
           when: on_fail
           command: |
             exit 0
-#            # Your code here
-#            aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
-#            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-backend
-#            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-frontend
+  #            # Your code here
+  #            aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
+  #            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-backend
+  #            aws cloudformation delete-stack --stack-name prod-<< parameters.workflow_id >>-udapeople-frontend
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -36,7 +36,7 @@ commands:
 #            if(( $SUCCESS=="1"));
 #            then
 #              cd ~/project/backend
-#              npm install
+#              npm install --ignore-scripts
 #              npm run migrations:revert
 #            fi
 
@@ -52,7 +52,7 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            npm i
+            npm install --ignore-scripts
             npm run build
       - save_cache:
           paths: [ frontend/node_modules ]
@@ -69,7 +69,7 @@ jobs:
           name: Back-end build
           command: |
             cd backend
-            npm i
+            npm install --ignore-scripts
             npm run build
       - save_cache:
           paths: [ backend/node_modules ]
@@ -91,7 +91,7 @@ jobs:
           no_output_timeout: 20m
           command: |
             cd frontend
-            npm i
+            npm install --ignore-scripts
             npm run test
 
   test-backend:
@@ -262,7 +262,7 @@ jobs:
           name: Run migrations
           command: |
             cd ~/project/backend/
-            npm i
+            npm install --ignore-scripts
             npm run migrations > migrations.txt
             cat migrations.txt
       - run:
@@ -311,7 +311,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
-            npm install
+            npm install --ignore-scripts
             npm run build
             aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID}
       # Here's where you will add some code to rollback on failure
