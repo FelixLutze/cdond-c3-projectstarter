@@ -31,7 +31,8 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS=$(curl -H "token: 2602a685-e328-4829-902c-c2a29a663828" --request GET https://api.memstash.io/values/migration-<< parameters.workflow_id >>)
-            if(( $SUCCESS=="1"));
+            echo ${SUCCESS}
+            if [[ ${SUCCESS} -eq 1 ]];
             then
               cd ~/project/backend
               npm install
@@ -366,10 +367,15 @@ jobs:
 
   smoke-test:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip curl
+            pip install awscli
       - run:
           name: Backend smoke test.
           command: |
@@ -401,15 +407,17 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: amazon/aws-cli
       # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            yum install -y tar gzip
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs
       - run:
           name: Update cloudfront distribution
           command: |
