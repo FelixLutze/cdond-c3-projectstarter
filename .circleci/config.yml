@@ -460,7 +460,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Get old stack workflow id
+          name: Remove old stacks and files
           command: |
             # your code here
             export OldWorkflowID=`cat ~/current_cloudfront.txt`
@@ -469,9 +469,7 @@ jobs:
 
             echo "STACKS: ${STACKS}"
             echo "OldWorkflowID: ${OldWorkflowID}"
-      - run:
-          name: Remove old stacks and files
-          command: |
+
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
@@ -481,7 +479,6 @@ jobs:
             else
               echo "No old Stacks found."
             fi
-
 workflows:
   default:
     jobs:
