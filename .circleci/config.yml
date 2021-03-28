@@ -444,24 +444,35 @@ jobs:
   cleanup:
     docker:
       # Docker image here
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
       - run:
+          name: Install dependencies
+          command: |
+            yum install -y tar gzip
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs
+      - run:
           name: Get old stack workflow id
           command: |
             # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
+            export OldWorkflowID=`cat ~/current_cloudfront.txt`
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+              --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
+
+            echo "$STACKS: {STACKS}"
+            echo "OldWorkflowID ${OldWorkflowID}"
       - run:
           name: Remove old stacks and files
           command: |
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              # your code here
+              aws s3 rb "s3://udapeople-${OldWorkflowID}" --force
+              aws cloudformation delete-stack --stack-name "prod-${OldWorkflowID}-udapeople-backend"
+              aws cloudformation delete-stack --stack-name "prod-${OldWorkflowID}-udapeople-frontend"
             fi
-
 
 workflows:
   default:
