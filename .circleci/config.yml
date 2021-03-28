@@ -161,6 +161,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
               --stack-name "prod-${CIRCLE_WORKFLOW_ID}-udapeople-backend" \
+              --region ${AWS_DEFAULT_REGION} \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
       - run:
           name: Ensure front-end infrastructure exist
@@ -169,6 +170,7 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
               --stack-name "prod-${CIRCLE_WORKFLOW_ID}-udapeople-frontend" \
+              --region ${AWS_DEFAULT_REGION} \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
       - run:
           name: Add back-end ip to ansible inventory
@@ -427,6 +429,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --stack-name prduction-udapeople-cloudfront \
+              --region ${AWS_DEFAULT_REGION} \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID}"
 
             echo "Current Cloudfront information:"
